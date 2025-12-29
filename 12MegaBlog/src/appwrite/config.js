@@ -61,6 +61,7 @@ export class Service{
             await this.databases.deleteRow({
                 databaseId: conf.appwriteDatabaseId,
                 tableId: conf.appwriteCollectionId,
+                rowId: slug,
                 queries: [
                 Query.equal("id", slug) // delete the row where id = slug
             ]
@@ -86,15 +87,16 @@ export class Service{
         }
     }
 
-    async getPosts(queries = [Query.equal("status","equal")])
+    async getPosts(queries = [Query.equal("status","active")])
     {
         try {
-            return await this.databases.listRows({
+            const response =  await this.databases.listRows({
                 databaseId: conf.appwriteDatabaseId,
                 tableId: conf.appwriteCollectionId,
                 queries: queries,
 
-            })
+            });
+            return response;
         } catch (error) {
             console.log("Appwrite service :: get All Posts :: error",error); 
             return false;
@@ -130,10 +132,10 @@ export class Service{
         }
     }
 
-    getFilePreview(fileId)
+     getFilePreview(fileId)
     {
         try {
-            return this.bucket.getFilePreview({
+            return this.bucket.getFileView({
                 bucketId: conf.appwriteBucketId,
                 fileId: fileId
             })

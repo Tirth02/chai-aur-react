@@ -3,14 +3,24 @@ import { Container, PostCard } from '../components'
 import service from '../appwrite/config';
 const AllPosts = () => {
     const [posts, setPosts] = useState([])
-    useEffect(() => {},[])
-    service.getPosts([]).then((posts) => {
-        if(posts)
-        {
-            setPosts(posts.documents);
-        }
+    useEffect(() => {
+        const fetchPosts = async () => {
+      try {
+        const response = await service.getPosts([]);
 
-    })
+        if (response && response.rows) {
+          setPosts(response.rows);
+        } else {
+          setPosts([]); // fallback safety
+        }
+      } catch (error) {
+        console.error("Error fetching posts:", error);
+        setPosts([]);
+      }
+    };
+
+    fetchPosts();
+    },[])
   return (
     <div className='w-full py-8'>
         <Container>

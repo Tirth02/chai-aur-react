@@ -16,9 +16,10 @@ const PostForm = ({ post }) => {
       },
     });
   const navigate = useNavigate();
-  const userData = useSelector((state) => state.user.userData);
+  const userData = useSelector((state) => state.auth.userData);
 
   const submit = async (data) => {
+    console.log("In submit")
     if (post) {
       const file = data.image[0] ? service.uploadFile(data.image[0]) : null;
       if (file) {
@@ -106,7 +107,7 @@ const PostForm = ({ post }) => {
         {post && (
           <div className="w-full mb-4">
             <img
-              src={appwriteService.getFilePreview(post.featuredImage)}
+              src={service.getFilePreview(post.featuredImage)}
               alt={post.title}
               className="rounded-lg"
             />
