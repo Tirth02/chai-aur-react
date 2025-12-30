@@ -28,10 +28,10 @@ const PostForm = ({ post }) => {
       const dbPost = await service.updatePost(post.$id, {
         ...data,
         featuredImage: file ? file.$id : undefined,
-        if(dbPost) {
-          navigate(`post/${dbPost.$id}`);
-        },
       });
+      if(dbPost) {
+          navigate(`/`);
+        }
     } else {
       const file = data.image ? await service.uploadFile(data.image[0]) : null;
       if (file) {
@@ -59,6 +59,7 @@ const PostForm = ({ post }) => {
         return "";
   }, []);
 
+  
   useEffect(() => {
     const subscription = watch((value, { name }) => {
       if (name === "title") {
@@ -83,7 +84,7 @@ const PostForm = ({ post }) => {
           placeholder="Slug"
           className="mb-4"
           {...register("slug", { required: true })}
-          onInput={(e) => {
+          onInput={(e) => { 
             setValue("slug", slugTransform(e.currentTarget.value), {
               shouldValidate: true,
             });
